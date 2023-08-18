@@ -1,8 +1,5 @@
 #pragma once
 
-#include "test_runner.h"
-#include "profile.h"
-
 #include <future>
 #include <mutex>
 #include <unordered_map>
@@ -11,6 +8,9 @@
 #include <algorithm>
 #include <random>
 using namespace std;
+
+namespace cmap_one2one 
+{
 
 template <typename K, typename V, typename Hash = std::hash<K>>
 class ConcurrentMap {
@@ -88,3 +88,5 @@ private:
   vector<MapType> map_collection_;
   mutable vector<mutex> mutexes_;
 };
+
+}

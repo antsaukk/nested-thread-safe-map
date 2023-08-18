@@ -1,15 +1,16 @@
-#include "cmap.hpp"
+#include "cmap_o2o.hpp"
 
-#include "test_runner.h"
-#include "profile.h"
+#include "../utils/test_runner.h"
+#include "../utils/profile.h"
 
 using uri = std::string;
-using cmap_fold = unordered_map<uri, class ConcurrentMap<int, int>>;
+using cMapInt = cmap_one2one::ConcurrentMap<int, int>;
+using cmap_fold = unordered_map<uri, class cmap_one2one::ConcurrentMap<int, int>>;
 
 void TestSimple()
 {
   cmap_fold testMap;
-  testMap.insert({"one", ConcurrentMap<int, int>(1)});
+  testMap.insert({"one", cMapInt(1)});
 
   ASSERT_EQUAL(1, testMap.size());
 
@@ -39,7 +40,7 @@ void RunConcurrentUpdates(
       }
     }
 
-    ss << "I am thread: " << this_thread::get_id() << "\n";
+    ss << "I am thread " << this_thread::get_id() << "\n";
     cout << ss.str() << std::endl;
     
   };
@@ -59,7 +60,7 @@ void TestAsync()
   cmap_fold cm;
   for (int i = 0; i < experiments; i++)
   {
-    cm.insert({std::to_string(i), ConcurrentMap<int, int>(thread_count)});
+    cm.insert({std::to_string(i), cMapInt(thread_count)});
   }
   
   RunConcurrentUpdates(cm, thread_count, key_count);
